@@ -1,16 +1,16 @@
 /*<simulation_settings>
-<ftestbench_cmd>quartus_eda --gen_testbench --tool=modelsim_oem --format=vhdl --write_settings_files=off latch_ff -c latch_ff --vector_source="/home/rafael/Documents/unicamp/mc/613/Lab06/latch_ff/latch_sr_gated_sim.vwf" --testbench_file="/home/rafael/Documents/unicamp/mc/613/Lab06/latch_ff/simulation/qsim/latch_sr_gated_sim.vwf.vht"</ftestbench_cmd>
-<ttestbench_cmd>quartus_eda --gen_testbench --tool=modelsim_oem --format=vhdl --write_settings_files=off latch_ff -c latch_ff --vector_source="/home/rafael/Documents/unicamp/mc/613/Lab06/latch_ff/latch_sr_gated_sim.vwf" --testbench_file="/home/rafael/Documents/unicamp/mc/613/Lab06/latch_ff/simulation/qsim/latch_sr_gated_sim.vwf.vht"</ttestbench_cmd>
+<ftestbench_cmd>quartus_eda --gen_testbench --tool=modelsim_oem --format=vhdl --write_settings_files=off latch_ff -c latch_ff --vector_source="/home/rafael/Documents/unicamp/mc/613/Lab06/latch_ff/latches_ffs_test_sim.vwf" --testbench_file="/home/rafael/Documents/unicamp/mc/613/Lab06/latch_ff/simulation/qsim/latches_ffs_test_sim.vwf.vht"</ftestbench_cmd>
+<ttestbench_cmd>quartus_eda --gen_testbench --tool=modelsim_oem --format=vhdl --write_settings_files=off latch_ff -c latch_ff --vector_source="/home/rafael/Documents/unicamp/mc/613/Lab06/latch_ff/latches_ffs_test_sim.vwf" --testbench_file="/home/rafael/Documents/unicamp/mc/613/Lab06/latch_ff/simulation/qsim/latches_ffs_test_sim.vwf.vht"</ttestbench_cmd>
 <fnetlist_cmd>quartus_eda --write_settings_files=off --simulation --functional=on --flatten_buses=off --tool=modelsim_oem --format=vhdl --output_directory="/home/rafael/Documents/unicamp/mc/613/Lab06/latch_ff/simulation/qsim/" latch_ff -c latch_ff</fnetlist_cmd>
 <tnetlist_cmd>quartus_eda --write_settings_files=off --simulation --functional=off --flatten_buses=off --timescale=1ps --tool=modelsim_oem --format=vhdl --output_directory="/home/rafael/Documents/unicamp/mc/613/Lab06/latch_ff/simulation/qsim/" latch_ff -c latch_ff</tnetlist_cmd>
 <modelsim_script>onerror {exit -code 1}
 vlib work
 vcom -work work latch_ff.vho
-vcom -work work latch_sr_gated_sim.vwf.vht
-vsim -novopt -c -t 1ps -L cyclonev -L altera -L altera_mf -L 220model -L sgate -L altera_lnsim work.latch_sr_gated_vhd_vec_tst
+vcom -work work latches_ffs_test_sim.vwf.vht
+vsim -novopt -c -t 1ps -L cyclonev -L altera -L altera_mf -L 220model -L sgate -L altera_lnsim work.latches_ffs_vhd_vec_tst
 vcd file -direction latch_ff.msim.vcd
-vcd add -internal latch_sr_gated_vhd_vec_tst/*
-vcd add -internal latch_sr_gated_vhd_vec_tst/i1/*
+vcd add -internal latches_ffs_vhd_vec_tst/*
+vcd add -internal latches_ffs_vhd_vec_tst/i1/*
 proc simTimestamp {} {
     echo "Simulation time: $::now ps"
     if { [string equal running [runStatus]] } {
@@ -24,11 +24,11 @@ quit -f
 <modelsim_script_timing>onerror {exit -code 1}
 vlib work
 vcom -work work latch_ff.vho
-vcom -work work latch_sr_gated_sim.vwf.vht
-vsim -novopt -c -t 1ps -sdfmax latch_sr_gated_vhd_vec_tst/i1=latch_ff_vhd.sdo -L cyclonev -L altera -L altera_mf -L 220model -L sgate -L altera_lnsim work.latch_sr_gated_vhd_vec_tst
+vcom -work work latches_ffs_test_sim.vwf.vht
+vsim -novopt -c -t 1ps -sdfmax latches_ffs_vhd_vec_tst/i1=latch_ff_vhd.sdo -L cyclonev -L altera -L altera_mf -L 220model -L sgate -L altera_lnsim work.latches_ffs_vhd_vec_tst
 vcd file -direction latch_ff.msim.vcd
-vcd add -internal latch_sr_gated_vhd_vec_tst/*
-vcd add -internal latch_sr_gated_vhd_vec_tst/i1/*
+vcd add -internal latches_ffs_vhd_vec_tst/*
+vcd add -internal latches_ffs_vhd_vec_tst/i1/*
 proc simTimestamp {} {
     echo "Simulation time: $::now ps"
     if { [string equal running [runStatus]] } {
@@ -68,24 +68,14 @@ HEADER
 	VERSION = 1;
 	TIME_UNIT = ns;
 	DATA_OFFSET = 0.0;
-	DATA_DURATION = 200.0;
+	DATA_DURATION = 400.0;
 	SIMULATION_TIME = 0.0;
 	GRID_PHASE = 0.0;
 	GRID_PERIOD = 10.0;
 	GRID_DUTY_CYCLE = 50;
 }
 
-SIGNAL("Clk")
-{
-	VALUE_TYPE = NINE_LEVEL_BIT;
-	SIGNAL_TYPE = SINGLE_BIT;
-	WIDTH = 1;
-	LSB_INDEX = -1;
-	DIRECTION = INPUT;
-	PARENT = "";
-}
-
-SIGNAL("Q")
+SIGNAL("Q[1]")
 {
 	VALUE_TYPE = NINE_LEVEL_BIT;
 	SIGNAL_TYPE = SINGLE_BIT;
@@ -95,7 +85,7 @@ SIGNAL("Q")
 	PARENT = "";
 }
 
-SIGNAL("Q_n")
+SIGNAL("Q[2]")
 {
 	VALUE_TYPE = NINE_LEVEL_BIT;
 	SIGNAL_TYPE = SINGLE_BIT;
@@ -105,7 +95,47 @@ SIGNAL("Q_n")
 	PARENT = "";
 }
 
-SIGNAL("R")
+SIGNAL("Q[3]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = OUTPUT;
+	PARENT = "";
+}
+
+SIGNAL("Q[4]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = OUTPUT;
+	PARENT = "";
+}
+
+SIGNAL("Q[5]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = OUTPUT;
+	PARENT = "";
+}
+
+SIGNAL("Q[6]")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = OUTPUT;
+	PARENT = "";
+}
+
+SIGNAL("A")
 {
 	VALUE_TYPE = NINE_LEVEL_BIT;
 	SIGNAL_TYPE = SINGLE_BIT;
@@ -115,7 +145,7 @@ SIGNAL("R")
 	PARENT = "";
 }
 
-SIGNAL("S")
+SIGNAL("B")
 {
 	VALUE_TYPE = NINE_LEVEL_BIT;
 	SIGNAL_TYPE = SINGLE_BIT;
@@ -125,7 +155,105 @@ SIGNAL("S")
 	PARENT = "";
 }
 
-TRANSITION_LIST("Clk")
+SIGNAL("clear")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = INPUT;
+	PARENT = "";
+}
+
+SIGNAL("clock")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = INPUT;
+	PARENT = "";
+}
+
+SIGNAL("preset")
+{
+	VALUE_TYPE = NINE_LEVEL_BIT;
+	SIGNAL_TYPE = SINGLE_BIT;
+	WIDTH = 1;
+	LSB_INDEX = -1;
+	DIRECTION = INPUT;
+	PARENT = "";
+}
+
+TRANSITION_LIST("Q[1]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 400.0;
+	}
+}
+
+TRANSITION_LIST("Q[2]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 400.0;
+	}
+}
+
+TRANSITION_LIST("Q[3]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 400.0;
+	}
+}
+
+TRANSITION_LIST("Q[4]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 400.0;
+	}
+}
+
+TRANSITION_LIST("Q[5]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 400.0;
+	}
+}
+
+TRANSITION_LIST("Q[6]")
+{
+	NODE
+	{
+		REPEAT = 1;
+		LEVEL X FOR 400.0;
+	}
+}
+
+TRANSITION_LIST("A")
+{
+	NODE
+	{
+		REPEAT = 1;
+		NODE
+		{
+			REPEAT = 2;
+			LEVEL 0 FOR 100.0;
+			LEVEL 1 FOR 100.0;
+		}
+	}
+}
+
+TRANSITION_LIST("B")
 {
 	NODE
 	{
@@ -133,65 +261,57 @@ TRANSITION_LIST("Clk")
 		NODE
 		{
 			REPEAT = 4;
-			LEVEL 0 FOR 25.0;
-			LEVEL 1 FOR 25.0;
-		}
-	}
-}
-
-TRANSITION_LIST("Q")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 200.0;
-	}
-}
-
-TRANSITION_LIST("Q_n")
-{
-	NODE
-	{
-		REPEAT = 1;
-		LEVEL X FOR 200.0;
-	}
-}
-
-TRANSITION_LIST("R")
-{
-	NODE
-	{
-		REPEAT = 1;
-		NODE
-		{
-			REPEAT = 2;
 			LEVEL 0 FOR 50.0;
 			LEVEL 1 FOR 50.0;
 		}
 	}
 }
 
-TRANSITION_LIST("S")
+TRANSITION_LIST("clear")
 {
 	NODE
 	{
 		REPEAT = 1;
-		LEVEL 0 FOR 25.0;
-		LEVEL 1 FOR 35.0;
-		LEVEL 0 FOR 15.0;
-		LEVEL 1 FOR 25.0;
 		NODE
 		{
-			REPEAT = 2;
+			REPEAT = 8;
 			LEVEL 0 FOR 25.0;
 			LEVEL 1 FOR 25.0;
 		}
 	}
 }
 
+TRANSITION_LIST("clock")
+{
+	NODE
+	{
+		REPEAT = 1;
+		NODE
+		{
+			REPEAT = 8;
+			LEVEL 0 FOR 25.0;
+			LEVEL 1 FOR 25.0;
+		}
+	}
+}
+
+TRANSITION_LIST("preset")
+{
+	NODE
+	{
+		REPEAT = 1;
+		NODE
+		{
+			REPEAT = 16;
+			LEVEL 0 FOR 12.5;
+			LEVEL 1 FOR 12.5;
+		}
+	}
+}
+
 DISPLAY_LINE
 {
-	CHANNEL = "Clk";
+	CHANNEL = "clock";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 0;
@@ -200,7 +320,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "S";
+	CHANNEL = "A";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 1;
@@ -209,7 +329,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "R";
+	CHANNEL = "B";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 2;
@@ -218,7 +338,7 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "Q";
+	CHANNEL = "clear";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 3;
@@ -227,10 +347,64 @@ DISPLAY_LINE
 
 DISPLAY_LINE
 {
-	CHANNEL = "Q_n";
+	CHANNEL = "preset";
 	EXPAND_STATUS = COLLAPSED;
 	RADIX = Binary;
 	TREE_INDEX = 4;
+	TREE_LEVEL = 0;
+}
+
+DISPLAY_LINE
+{
+	CHANNEL = "Q[1]";
+	EXPAND_STATUS = COLLAPSED;
+	RADIX = Binary;
+	TREE_INDEX = 5;
+	TREE_LEVEL = 0;
+}
+
+DISPLAY_LINE
+{
+	CHANNEL = "Q[2]";
+	EXPAND_STATUS = COLLAPSED;
+	RADIX = Binary;
+	TREE_INDEX = 6;
+	TREE_LEVEL = 0;
+}
+
+DISPLAY_LINE
+{
+	CHANNEL = "Q[3]";
+	EXPAND_STATUS = COLLAPSED;
+	RADIX = Binary;
+	TREE_INDEX = 7;
+	TREE_LEVEL = 0;
+}
+
+DISPLAY_LINE
+{
+	CHANNEL = "Q[4]";
+	EXPAND_STATUS = COLLAPSED;
+	RADIX = Binary;
+	TREE_INDEX = 8;
+	TREE_LEVEL = 0;
+}
+
+DISPLAY_LINE
+{
+	CHANNEL = "Q[5]";
+	EXPAND_STATUS = COLLAPSED;
+	RADIX = Binary;
+	TREE_INDEX = 9;
+	TREE_LEVEL = 0;
+}
+
+DISPLAY_LINE
+{
+	CHANNEL = "Q[6]";
+	EXPAND_STATUS = COLLAPSED;
+	RADIX = Binary;
+	TREE_INDEX = 10;
 	TREE_LEVEL = 0;
 }
 

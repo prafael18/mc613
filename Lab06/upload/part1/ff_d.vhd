@@ -18,25 +18,13 @@ begin
 	process (D, Clk, Preset, Clear)
 	variable tmp: std_logic;
 	begin
-		if clear = '1' then tmp := '0';
-		elsif preset = '1' then tmp := '1';
-		else
-			if (Clk'event and Clk = '1') then
-				tmp := D;
+		if (Clk'event and Clk = '1') then
+			if clear = '1' then tmp := '0';
+			elsif preset = '1' then tmp := '1';
+			else tmp := D;
 			end if;
 		end if;
 		Q <= tmp;
 		Q_n <= not(tmp);
 	end process;
 end structural;
-
-
-  lff5: ff_jk port map (
-    J      => A,
-    K      => B,
-    Clk    => clock,
-    Q      => Q(5), -- << CHANGE HERE
-    Q_n    => open,
-    Preset => preset,
-    Clear  => clear
-  );

@@ -18,15 +18,15 @@ begin
 	variable tmp: std_logic;
 	variable SR: std_logic_vector(1 downto 0);
 	begin
+		SR := S & R;
 		if Clk = '1' then
-			SR := S & R;
 			case(SR) is
 				when "01" => tmp := '0';
 				when "10" => tmp := '1';
 				when others => tmp := tmp;
 			end case;
-			Q <= tmp;
-			Q_n <= not(tmp);
 		end if;
+		Q <= tmp;
+		Q_n <= not(tmp);
 	end process;
 end structural;
