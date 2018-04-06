@@ -1,0 +1,21 @@
+Esperava-se que o aumento no tempo de propagação fosse linear em relação ao aumento no número de portas, já que nos slides, a fórmula para o atraso de um somador de n bits é dada por t_ripple = N*t_FA, onde t_FA é o tempo de propagação do sinal em um full adder de um bit. 
+
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+Olhando para o circuito implementado, é natural esperar um comportamento linear crescente, já que cada full adder usa a saída do anterior para computar a própria saída. 
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+
+Plotando o gráfico dos pontos, observou-se que a relação é linear, entretanto, não obedece à formula dos slides, já que de acordo com a fórmula a reta intercepta a origem. Uma fórmula mais apropriada consideraria um offset como 
+
+t_ripple = N*t_FA + offset
+
+Esse offset está muito provavelmente associado ao delay para o disparo do sinal, que após disparado leva um tempo aproximadamente constante para propagar-se entre cada full adder. Além disso, observou-se um outlier no caso N=8, onde o tempo de propagação aumentou mais do que esperado, ultrapassando o tempo de propagação do caso N=16. Desconsiderando o ponto N=8, encontrou-se que t_FA vale aproximadamente 0,475ns/N e o offset vale aproximadamente 5,28ns, onde o coeficiente de determinação da reta vale 0,996. Caso tomassemos em conta o ponto para N=8, o coeficiente de determinação cairia para 0,971 e, por isso, o ponto foi considerado um outlier. 
+
+Resultados:
+__________________
+N		  | delay		
+______|____________
+4		  | 8.070
+8		  | 13.289
+16		| 12.225 
+32		| 19.784
+64		| 36.105
