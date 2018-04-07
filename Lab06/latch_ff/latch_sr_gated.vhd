@@ -20,13 +20,13 @@ begin
 	begin
 		if Clk = '1' then
 			SR := S & R;
-			case(SR) is
-				when "01" => tmp := '0';
-				when "10" => tmp := '1';
-				when others => tmp := tmp;
-			end case;
-			Q <= tmp;
-			Q_n <= not(tmp);
+			if SR = "01" then
+				Q <= '0';
+				Q_n <= '1';
+			elsif SR = "10" then
+				Q <= '1';
+				Q_n <= '0';
+			end if;
 		end if;
 	end process;
 end structural;
