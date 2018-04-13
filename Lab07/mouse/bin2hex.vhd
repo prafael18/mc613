@@ -1,15 +1,16 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity bin2dec is
+entity bin2hex is
 port (SW: in std_logic_vector(3 downto 0);
 		HEX0: out std_logic_vector(6 downto 0));
-end bin2dec;
+end bin2hex;
 
-Architecture Behavior of bin2dec is
+Architecture Comportamento of bin2hex is
 begin
 	with SW select
-		HEX0 <=  "1111001" when "0001",
+		HEX0 <=  "1000000" when "0000",
+					"1111001" when "0001",
 					"0100100" when "0010",
 					"0110000" when "0011",
 					"0011001" when "0100",
@@ -18,6 +19,10 @@ begin
 					"1111000" when "0111",
 					"0000000" when "1000",
 					"0010000" when "1001",
-					"1000000" when others;
---					"1111111" when others;
-END Behavior;
+					"0001000" when "1010",
+					"0000011" when "1011",
+					"1000110" when "1100",
+					"0100001" when "1101",
+					"0000110" when "1110",
+					"0001110" when "1111";	
+END Comportamento;

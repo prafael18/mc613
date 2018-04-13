@@ -43,27 +43,42 @@ architecture rtl of clock is
 	signal sig_hour_dec, sig_hour_un : std_logic_vector (3 downto 0);
 	signal sig_min_dec, sig_min_un : std_logic_vector (3 downto 0);
 	signal sig_sec_dec, sig_sec_un : std_logic_vector (3 downto 0);
-	signal sig0 : std_logic_vector (3 downto 0);
-	signal sig1 : std_logic_vector (3 downto 0);
-
-	shared variable var_set_sec_un, var_set_sec_dec : integer := 0;
-	shared variable var_set_min_un, var_set_min_dec : integer := 0;
-	shared variable var_set_hour_un, var_set_hour_dec : integer := 0;
 	
 begin
 	clock_divider : clk_div port map (clk, clk_hz);
 	
 	process(clk_hz, set_second, set_minute, set_hour)
+		variable var_set_sec_un: integer := 0;
+		variable var_set_sec_dec : integer := 0;
+		variable var_set_min_un: integer := 0;
+		variable var_set_min_dec : integer := 0;
+		variable var_set_hour_un: integer := 0;
+		variable var_set_hour_dec : integer := 0;
+		
+		variable un_tmp: integer := 0;
+		variable dec_tmp: integer := 0;
 	begin
 		if set_hour='1' then
-			var_set_hour_un := (to_integer(unsigned(unity)));
-			var_set_hour_dec := (to_integer(unsigned(decimal)));
-		elsif set_minute = '1' then 
-			var_set_min_un := (to_integer(unsigned(unity)));
-			var_set_min_dec := (to_integer(unsigned(decimal)));
+			un_tmp := (to_integer(unsigned(unity)));
+			dec_tmp := (to_integer(unsigned(decimal)));
+			if (dec_tmp = 2 and un_tmp <= 3) or (dec_tmp <= 1 and un_tmp <=9) then
+				var_set_hour_un  := un_tmp;
+				var_set_hour_dec := dec_tmp;
+			end if;
+		elsif set_minute = '1' then
+			un_tmp := (to_integer(unsigned(unity)));
+			dec_tmp := (to_integer(unsigned(decimal)));
+			if dec_tmp <= 5 and un_tmp <= 9 then
+				var_set_min_un  := un_tmp;
+				var_set_min_dec := dec_tmp;
+			end if;
 		elsif set_second = '1' then
-			var_set_sec_un := (to_integer(unsigned(unity)));
-			var_set_sec_dec := (to_integer(unsigned(decimal)));
+			un_tmp := (to_integer(unsigned(unity)));
+			dec_tmp := (to_integer(unsigned(decimal)));
+			if dec_tmp <= 5 and un_tmp <= 9 then
+				var_set_sec_un  := un_tmp;
+				var_set_sec_dec := dec_tmp;
+			end if;
 		elsif clk_hz'event and clk_hz='1' then
 			var_set_sec_un := var_set_sec_un + 1;
 			if var_set_sec_un = 10 then
@@ -85,6 +100,7 @@ begin
 				var_set_min_dec := 0;
 				var_set_hour_un := var_set_hour_un + 1;
 			end if;
+			
 			if var_set_hour_un = 10 then
 				var_set_hour_un := 0;
 				var_set_hour_dec := var_set_hour_dec + 1;
@@ -102,6 +118,8 @@ begin
 		sig_hour_un <= std_logic_vector(to_unsigned(var_set_hour_un, sig_hour_un'length));
 		sig_hour_dec <= std_logic_vector(to_unsigned(var_set_hour_dec, sig_hour_dec'length));
 	end process;
+	
+
 	
 	sec_un_map: bin2dec port map (sig_sec_un, sec_un);
 	sec_dec_map: bin2dec port map (sig_sec_dec, sec_dec);
