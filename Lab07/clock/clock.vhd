@@ -47,76 +47,77 @@ architecture rtl of clock is
 begin
 	clock_divider : clk_div port map (clk, clk_hz);
 	
-	process(clk_hz, set_second, set_minute, set_hour)
-		variable var_set_sec_un: integer := 0;
-		variable var_set_sec_dec : integer := 0;
-		variable var_set_min_un: integer := 0;
-		variable var_set_min_dec : integer := 0;
-		variable var_set_hour_un: integer := 0;
-		variable var_set_hour_dec : integer := 0;
+	process
+		variable var_set_sec_un  : std_logic_vector(3 downto 0) := "0000";
+		variable var_set_sec_dec : std_logic_vector(3 downto 0) := "0000";
+		variable var_set_min_un  : std_logic_vector(3 downto 0) := "0000";
+		variable var_set_min_dec : std_logic_vector(3 downto 0) := "0000";
+		variable var_set_hour_un : std_logic_vector(3 downto 0) := "0000";
+		variable var_set_hour_dec: std_logic_vector(3 downto 0) := "0000";
 		
-		variable un_tmp: integer := 0;
-		variable dec_tmp: integer := 0;
+		variable un_tmp : std_logic_vector(3 downto 0) := "0000";
+		variable dec_tmp: std_logic_vector(3 downto 0) := "0000";
 	begin
+		wait until clk'event and clk = '1';
 		if set_hour='1' then
-			un_tmp := (to_integer(unsigned(unity)));
-			dec_tmp := (to_integer(unsigned(decimal)));
-			if (dec_tmp = 2 and un_tmp <= 3) or (dec_tmp <= 1 and un_tmp <=9) then
+			un_tmp  := unity;
+			dec_tmp := decimal;
+			if (dec_tmp = "0010" and un_tmp <= "0011") or (dec_tmp <= "0001" and un_tmp <= "1001") then
 				var_set_hour_un  := un_tmp;
 				var_set_hour_dec := dec_tmp;
 			end if;
 		elsif set_minute = '1' then
-			un_tmp := (to_integer(unsigned(unity)));
-			dec_tmp := (to_integer(unsigned(decimal)));
-			if dec_tmp <= 5 and un_tmp <= 9 then
+			un_tmp := unity;
+			dec_tmp := decimal;
+			if dec_tmp <= "0101" and un_tmp <= "1001" then
 				var_set_min_un  := un_tmp;
 				var_set_min_dec := dec_tmp;
 			end if;
 		elsif set_second = '1' then
-			un_tmp := (to_integer(unsigned(unity)));
-			dec_tmp := (to_integer(unsigned(decimal)));
-			if dec_tmp <= 5 and un_tmp <= 9 then
+			un_tmp := unity;
+			dec_tmp := decimal;
+			if dec_tmp <= "0101" and un_tmp <= "1001" then
 				var_set_sec_un  := un_tmp;
 				var_set_sec_dec := dec_tmp;
 			end if;
-		elsif clk_hz'event and clk_hz='1' then
-			var_set_sec_un := var_set_sec_un + 1;
-			if var_set_sec_un = 10 then
-				var_set_sec_un := 0;
-				var_set_sec_dec := var_set_sec_dec + 1;
+		elsif clk_hz = '1' then
+			var_set_sec_un := std_logic_vector(unsigned(var_set_sec_un) + 1 );
+			if var_set_sec_un = "1010" then
+				var_set_sec_un := "0000";
+				var_set_sec_dec := std_logic_vector(unsigned(var_set_sec_dec) + 1 );
 			end if;
 			
-			if var_set_sec_dec = 6 then
-				var_set_sec_dec := 0;
-				var_set_min_un := var_set_min_un + 1;
+			if var_set_sec_dec = "0110" then
+				var_set_sec_dec := "0000";
+				var_set_min_un := std_logic_vector(unsigned(var_set_min_un) + 1 );
 			end if;
 			
-			if var_set_min_un = 10 then
-				var_set_min_un := 0;
-				var_set_min_dec := var_set_min_dec + 1;
+			if var_set_min_un = "1010" then
+				var_set_min_un := "0000";
+				var_set_min_dec := std_logic_vector(unsigned(var_set_min_dec) + 1 );
 			end if;
 			
-			if var_set_min_dec = 6 then
-				var_set_min_dec := 0;
-				var_set_hour_un := var_set_hour_un + 1;
+			if var_set_min_dec = "0110" then
+				var_set_min_dec := "0000";
+				var_set_hour_un := std_logic_vector(unsigned(var_set_hour_un) + 1 );
 			end if;
 			
-			if var_set_hour_un = 10 then
-				var_set_hour_un := 0;
-				var_set_hour_dec := var_set_hour_dec + 1;
+			if var_set_hour_un = "1010" then
+				var_set_hour_un := "0000";
+				var_set_hour_dec := std_logic_vector(unsigned(var_set_hour_dec) + 1 );
 			end if;
 				
-			if var_set_hour_dec = 2 and var_set_hour_un = 4 then
-				var_set_hour_un := 0;
-				var_set_hour_dec := 0;
+			if var_set_hour_dec = "0010" and var_set_hour_un = "0100" then
+				var_set_hour_un := "0000";
+				var_set_hour_dec := "0000";
 			end if;
 		end if;
-		sig_sec_un <= std_logic_vector(to_unsigned(var_set_sec_un, sig_sec_un'length));
-		sig_sec_dec <= std_logic_vector(to_unsigned(var_set_sec_dec, sig_sec_dec'length));
-		sig_min_un <= std_logic_vector(to_unsigned(var_set_min_un, sig_min_un'length));
-		sig_min_dec <= std_logic_vector(to_unsigned(var_set_min_dec, sig_min_dec'length));
-		sig_hour_un <= std_logic_vector(to_unsigned(var_set_hour_un, sig_hour_un'length));
-		sig_hour_dec <= std_logic_vector(to_unsigned(var_set_hour_dec, sig_hour_dec'length));
+		sig_sec_un <= var_set_sec_un;
+		sig_sec_dec <= var_set_sec_dec;
+		sig_min_un <= var_set_min_un;
+		sig_min_dec <= var_set_min_dec;
+		sig_hour_un <= var_set_hour_un;
+		sig_hour_dec <= var_set_hour_dec;
 	end process;
 	
 
