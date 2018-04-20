@@ -1,17 +1,17 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
-entity fsm_table is
+entity fsm_seq is
   port (
     clock : in std_logic;
 	 reset: in std_logic;
 	 w: in std_logic;
     z : out std_logic
   );
-end fsm_table;
+end fsm_seq;
 
-architecture behavioral of fsm_table is
-	type state_type is (A, B, C, D);
+architecture behavioral of fsm_seq is
+	type state_type is (A, B, C, D, E);
 	signal y: state_type;
 begin
 	process (reset, clock)
@@ -20,36 +20,27 @@ begin
 		elsif clock'event and clock = '1' then
 			case y is
 				when A =>
-					if w = '0' then y <= C;
-					else y <= B;
+					if w = '0' then y <= B;
+					else y <= A;
 					end if;
 				when B =>
-					if w = '0' then y <= D;
-					else y <= C;
-					end if;
-				when C =>
 					if w = '0' then y <= B;
 					else y <= C;
 					end if;
+				when C =>
+					if w = '0' then y <= D;
+					else y <= A;
+					end if;
 				when D =>
-					if w = '0' then y <= A;
-					else y <= C;
+					if w = '0' then y <= B;
+					else y <= E;
+					end if;
+				when E =>
+					if w = '0' then y <= D;
+					else y <= A;
 					end if;
 			end case;
 		end if;
 	end process;
-	
-	process (y, w)
-	begin
-		case y is
-			when A =>
-				z <= '1';
-			when B =>
-				z <= not w;
-			when C => 
-				z <= '0';
-			when D =>
-				z <= w;
-		end case;
-	end process;
+	z <= '1' when y = E else '0';
 end behavioral;
