@@ -16,26 +16,28 @@ architecture behavioral of fsm_table is
 begin
 	process (reset, clock)
 	begin
-		if reset = '1' then y <= A;
-		elsif clock'event and clock = '1' then
-			case y is
-				when A =>
-					if w = '0' then y <= C;
-					else y <= B;
-					end if;
-				when B =>
-					if w = '0' then y <= D;
-					else y <= C;
-					end if;
-				when C =>
-					if w = '0' then y <= B;
-					else y <= C;
-					end if;
-				when D =>
-					if w = '0' then y <= A;
-					else y <= C;
-					end if;
-			end case;
+		if clock'event and clock = '1' then
+			if reset = '1' then y <= A;
+			else 
+				case y is
+					when A =>
+						if w = '0' then y <= C;
+						else y <= B;
+						end if;
+					when B =>
+						if w = '0' then y <= D;
+						else y <= C;
+						end if;
+					when C =>
+						if w = '0' then y <= B;
+						else y <= C;
+						end if;
+					when D =>
+						if w = '0' then y <= A;
+						else y <= C;
+						end if;
+				end case;
+			end if;
 		end if;
 	end process;
 	

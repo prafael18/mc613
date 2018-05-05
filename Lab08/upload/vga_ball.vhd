@@ -207,7 +207,7 @@ begin  -- comportamento
   begin  -- process p_atualiza_pos_x
     if rstn = '0' then	 -- asynchronous reset (active low)
       direcao := direita;
-		pos_x <= 0;
+			pos_x <= 0;
     elsif CLOCK_50'event and CLOCK_50 = '1' then  -- rising clock edge
       if atualiza_pos_x = '1' then
         if direcao = direita then         
@@ -242,7 +242,7 @@ begin  -- comportamento
   begin  -- process p_atualiza_pos_x
     if rstn = '0' then 	 -- asynchronous reset (active low)
       direcao := desce;
-		pos_y <= 0;
+			pos_y <= 0;
     elsif CLOCK_50'event and CLOCK_50 = '1' then  -- rising clock edge
       if atualiza_pos_y = '1' then
         if direcao = desce then         
