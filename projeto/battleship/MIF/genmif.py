@@ -1,0 +1,177 @@
+# Params
+import numpy as np
+
+# 7 - WHITE
+# 6 - YELLOW
+# 5 - PINK
+# 4 - RED
+# 3 - ?
+# 2 - GREEN
+# 1 - BLUE
+# 0 - BLACK
+
+#BATTLESHIP
+# All letters should fit inside a 5x5 matrix
+
+CENTER = 'X'
+RIGHT = '>'
+LEFT = '<'
+UPPER = '^'
+LOWER = '_'
+SINGLE = '@'
+WATER = '-'
+
+BLACK = bin(0).split('b')[1].zfill(8)
+BLUE = bin(1).split('b')[1].zfill(8)
+RED = bin(4).split('b')[1].zfill(8)
+GREEN = bin(2).split('b')[1].zfill(8)
+
+SHIP_BODY = bin(1).split('b')[1].zfill(8)
+WATER_BODY = bin(2).split('b')[1].zfill(8)
+
+word_size = 8
+bits_addr = 15
+
+max_col = 128
+max_line = 96
+
+def gen_alphabet(alphabet):
+    with open("alphabet.txt") as f:
+        out = f.readlines()
+        line_buffer = []
+        for l in out:
+            if "--" in l:
+                origins = []
+                char = l.split('--')[1]
+                for i in range(5):
+                    for j in range(5):
+                        if line_buffer[i][j] == 'X':
+                            origins.append((i,j))
+                        elif line_buffer[i][j] == '\n':
+                            break
+                        else:
+                            continue
+                alphabet.update({char:origins})
+                line_buffer = []
+            else:
+                line_buffer.append(l)
+
+
+def map_word_origins(string_name, string_origins, origin):
+    for i in range(string_name.__len__()):
+        string_origins.append((origin[0], origin[1] + 6*i))
+
+
+def write_char(memory_map, char_coord, origin, color):
+    for coord in char_coord:
+        memory_map[origin[0]+coord[0]][origin[1]+coord[1]] = color
+
+def write_word(name, origins, alphabet):
+    i = 0
+    for char in name:
+        color = None
+        if "*water" in name and char == "*":
+            color = BLUE
+        elif "*hit" in name and char == "*":
+            color = RED
+        else:
+            color = GREEN
+        write_char(memory_map, alphabet[char], origins[i], color=color)
+        i += 1
+
+def populate_list(filename, player_list):
+    with open(filename, "r") as p:
+        p_map = p.readlines()
+        for l in p_map:
+            keys = l.strip().split(' ')
+            for k in keys:
+                player_list.append(k)
+
+
+def populate_map(memory_map, player_list, player_origin):
+    for i in range(100):
+        line = player_origin[0]
+        col = player_origin[1] + i
+        print("{}, {}".format(line, col))
+        print("addr = {}".format((line*128)+col))
+        if player_list[i] == WATER:
+            memory_map[line][col] = WATER_BODY
+        elif player_list[i] == CENTER:
+            memory_map[line][col] = SHIP_BODY
+        else:
+            print("Character undefined.")
+            exit(1)
+
+        # line = int(5*(i//10)) + player_origin[1]
+        # col = int(5*(i%10)) + player_origin[0]
+        # coord = (line, col)
+        # write_char(memory_map, alphabet[CENTER], coord, BLUE)
+        # if player_list[i] == WATER:
+        #     write_char(memory_map, alphabet[CENTER], (line, col), BLUE)
+        # elif player_list[i] == CENTER:
+        #     write_char(memory_map, alphabet[CENTER], coord, RED)
+        # elif player_list[i] == LEFT:
+        #     write_char(memory_map, alphabet[LEFT], coord, RED)
+        # elif player_list[i] == RIGHT:
+        #     write_char(memory_map, alphabet[RIGHT], coord, RED)
+        # elif player_list[i] == UPPER:
+        #     write_char(memory_map, alphabet[UPPER], coord, RED)
+        # elif player_list[i] == LOWER:
+        #     write_char(memory_map, alphabet[LOWER], coord, RED)
+        # elif player_list[i] == SINGLE:
+        #     write_char(memory_map, alphabet[SINGLE], coord, RED)
+        # else:
+        #     print("Invalid char: {}".format(player_list[i]))
+        #     exit(1)
+
+
+if __name__ == "__main__":
+    alphabet = {}
+    gen_alphabet(alphabet)
+
+    with open("../Memory/initial_map.mif", "w") as f:
+        f.write("WIDTH={};\n".format(word_size))
+        f.write("DEPTH=\"{}\";\n\n".format(2**bits_addr))
+        f.write("ADDRESS_RADIX=UNS;\n")
+        f.write("DATA_RADIX=BIN;\n\n")
+        f.write("CONTENT BEGIN\n")
+
+        player1_list = []
+        player2_list = []
+
+        populate_list("player1.txt", player1_list)
+        populate_list("player2.txt", player2_list)
+
+        # player1_origin = (23, 9)
+        # player2_origin = (25, 9)
+
+        player1_origin = (0, 0)
+        player2_origin = (1, 0)
+
+        memory_map = [[BLACK for _ in range(max_col)] for _ in range(max_line)]
+
+        populate_map(memory_map, player1_list, player1_origin)
+        populate_map(memory_map, player2_list, player2_origin)
+
+        #Origin for battleship is (8,34) in VGA display.
+        title = "battleship"
+        title_origins = []
+        map_word_origins(title, title_origins, (2, 34))
+        write_word(title, title_origins, alphabet)
+
+
+        #Origin for hit is (75, 10)
+        #Origin for water is (81, 10)
+        legend1 = "*hit"
+        legend2 = "*water"
+        legend1_origins = []
+        legend2_origins = []
+        map_word_origins(legend1, legend1_origins, (7, 10))
+        write_word(legend1, legend1_origins, alphabet)
+        map_word_origins(legend2, legend2_origins, (13, 10))
+        write_word(legend2, legend2_origins, alphabet)
+
+        for l in range(max_line):
+            for c in range(max_col):
+                f.write("   {} : {};\n".format((l*128) + c, memory_map[l][c]))
+        f.write("END;\n")
