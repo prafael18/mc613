@@ -66,7 +66,7 @@ begin
         UART_RXD    => GPIO_0(0),
         -- USER DATA OUTPUT INTERFACE
         DATA_OUT    => data_out,
-        DATA_VLD    => LEDR(0),
+        DATA_VLD    => valid,
         FRAME_ERROR => LEDR(1),
         -- USER DATA INPUT INTERFACE
         DATA_IN     => SW(7 downto 0),
@@ -74,7 +74,20 @@ begin
         BUSY        => LEDR(2)
     );
 	 
-	 hex_disp1: bin2hex port map (data_out(7 downto 4), HEX1);
-	 hex_disp2: bin2hex port map (data_out(3 downto 0), HEX0);
 	 
+	process (valid, CLOCK_50)
+		variable tmp: std_logic;
+	begin
+	if (CLOCK_50'event and CLOCK_50 = '1') then
+		case (valid) is
+			when '0' => tmp := tmp;
+			when others => tmp := not tmp;
+		end case;
+	end if;
+		LEDR(0) <= tmp;
+	end process;
+
+	hex_disp1: bin2hex port map (data_out(7 downto 4), HEX1);
+	hex_disp2: bin2hex port map (data_out(3 downto 0), HEX0);
+		 
 end FULL;

@@ -46,14 +46,11 @@ set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
 set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
 set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
 set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 256
-set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (Verilog)"
+set_global_assignment -name EDA_SIMULATION_TOOL "ModelSim-Altera (VHDL)"
 set_global_assignment -name EDA_TIME_SCALE "1 ps" -section_id eda_simulation
-set_global_assignment -name EDA_OUTPUT_DATA_FORMAT "VERILOG HDL" -section_id eda_simulation
+set_global_assignment -name EDA_OUTPUT_DATA_FORMAT VHDL -section_id eda_simulation
 set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
-set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
-set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
-set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_location_assignment PIN_AJ4 -to ADC_CS_N
 set_location_assignment PIN_AK4 -to ADC_DIN
 set_location_assignment PIN_AK3 -to ADC_DOUT
@@ -312,8 +309,17 @@ set_location_assignment PIN_E12 -to VGA_R[6]
 set_location_assignment PIN_F13 -to VGA_R[7]
 set_location_assignment PIN_C10 -to VGA_SYNC_N
 set_location_assignment PIN_D11 -to VGA_VS
+set_global_assignment -name VERILOG_FILE VGA/vga_pll/vga_pll_0002.v
+set_global_assignment -name QIP_FILE VGA/vga_pll/vga_pll_0002.qip
+set_global_assignment -name VHDL_FILE VGA/vgacon.vhd
+set_global_assignment -name VHDL_FILE VGA/vga_pll.vhd
+set_global_assignment -name QIP_FILE VGA/vga_pll.qip
+set_global_assignment -name MIF_FILE VGA/vga_mem_2.mif
+set_global_assignment -name VHDL_FILE Player/player.vhd
+set_global_assignment -name VHDL_FILE Mouse/ps2_mouse.vhd
 set_global_assignment -name VHDL_FILE bin2hex.vhd
 set_global_assignment -name VHDL_FILE battleship.vhd
+set_global_assignment -name VHDL_FILE VGA/map_parser.vhd
 set_global_assignment -name VHDL_FILE UART/uart_tx.vhd
 set_global_assignment -name VHDL_FILE UART/uart_rx.vhd
 set_global_assignment -name VHDL_FILE UART/uart_parity.vhd
@@ -321,10 +327,18 @@ set_global_assignment -name VHDL_FILE UART/uart_board.vhd
 set_global_assignment -name VHDL_FILE UART/uart.vhd
 set_global_assignment -name MIF_FILE Memory/initial_map.mif
 set_global_assignment -name VHDL_FILE Memory/memory.vhd
-set_global_assignment -name VERILOG_FILE VGA/vga_pll/vga_pll_0002.v
-set_global_assignment -name QIP_FILE VGA/vga_pll/vga_pll_0002.qip
-set_global_assignment -name VHDL_FILE VGA/vgacon.vhd
-set_global_assignment -name VHDL_FILE VGA/vga_pll.vhd
-set_global_assignment -name QIP_FILE VGA/vga_pll.qip
-set_global_assignment -name VHDL_FILE VGA/map_parser.vhd
+set_global_assignment -name VHDL_FILE Mouse/ps2_iobase.vhd
+set_global_assignment -name VHDL_FILE Mouse/mouse_ctrl.vhd
+set_global_assignment -name VECTOR_WAVEFORM_FILE Memory/memory_sim.vwf
+set_global_assignment -name VECTOR_WAVEFORM_FILE memory_sim.vwf
+set_global_assignment -name EDA_TEST_BENCH_NAME player_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id player_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME player_tb -section_id player_tb
+set_global_assignment -name EDA_TEST_BENCH_ENABLE_STATUS TEST_BENCH_MODE -section_id eda_simulation
+set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH player_tb -section_id eda_simulation
+set_global_assignment -name EDA_TEST_BENCH_FILE Player/player.vhd -section_id player_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE Player/player_tb.vhd -section_id player_tb -hdl_version VHDL_2008
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

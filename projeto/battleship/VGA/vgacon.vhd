@@ -115,7 +115,7 @@ begin  -- behav
 -- instantiate a PLL (Phase Locked Loop) to divide out 27 MHz clock
 -- and reach a satisfiable 25.2MHz clock for our VGA controller (14/15 ratio)
 ------------------------------------------------------------------------------
-  divider: work.vga_pll port map (clk50M, NOT rstn, vga_clk_int);
+  divider: entity work.vga_pll port map (clk50M, NOT rstn, vga_clk_int);
   vga_clk <= vga_clk_int;
 
   -- This is our dual clock RAM. We use our VGA clock to read contents from
@@ -276,7 +276,7 @@ architecture behav of dual_clock_ram is
   attribute ramstyle : string;
   attribute ramstyle of dual_clock_ram : entity is "no_rw_check";
   attribute ram_init_file : string;
-  attribute ram_init_file of ram_block : signal is "vga_mem.mif";
+  attribute ram_init_file of ram_block : signal is "VGA/vga_mem_2.mif";
 
 begin  -- behav
 
