@@ -1,0 +1,19 @@
+X - - X X X - - X X
+X - - - - - - - - -
+X - X X - - - - - X
+- - - - - - X X X X
+- - X X - - - - - -
+- - - - - - - - - -
+- X - - X - - - - -
+- - - - - - - - - X
+- - - - - - - - - -
+- - - - - - - - - -
+
+
+Legenda:
+@ : singleton_ship
+X : ship_body
+< : left_end
+> : right_end
+^ : upper_end
+_ : lower_end
