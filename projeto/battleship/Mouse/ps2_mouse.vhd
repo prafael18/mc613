@@ -12,6 +12,7 @@ entity ps2_mouse is
 		PS2_CLK	:		inout	STD_LOGIC;		--	PS2 Clock
 		KEY		:		in STD_LOGIC_VECTOR(0 downto 0);
 		left_click  : out std_logic;
+		right_click : out std_logic;
 		y_coord		: out integer range -2000 to 2000;
 		x_coord 		: out integer range -2000 to 2000;
 		newdata		: out std_logic
@@ -77,6 +78,7 @@ begin
 	x_coord <= x;
 	y_coord <= y;
 	left_click <= button_click(0);
+	right_click <= button_click(1);
 	newdata <= signewdata;
 
 end struct;

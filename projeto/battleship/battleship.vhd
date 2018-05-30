@@ -13,7 +13,7 @@ entity battleship is
     VGA_BLANK_N, VGA_SYNC_N   : out std_logic;
     VGA_CLK                   : out std_logic;
 	 GPIO_0							: inout std_logic_vector (35 downto 0);
-    LEDR								: out std_logic_vector(3 downto 0));
+    LEDR								: out std_logic_vector(8 downto 0));
 end battleship;
 
 architecture full of battleship is
@@ -23,6 +23,7 @@ architecture full of battleship is
 	
 	--Mouse signals
 	signal left_click : std_logic;
+	signal right_click: std_logic;
 	signal y_coord : integer;
 	signal x_coord : integer;
 	
@@ -39,14 +40,17 @@ architecture full of battleship is
 	signal uart_wr_data: std_logic_vector (7 downto 0);
 	signal uart_we: std_logic;
 	signal uart_valid: std_logic;
+	signal game_over: integer range 0 to 2;
 	
 	signal hexdata : std_logic_vector(15 downto 0);
 	signal mouse_pos_addr_log : std_logic_vector(7 downto 0);
 
 begin
 
-	LEDR(0) <= uart_valid;
-		
+	LEDR(0) <= left_click;
+	LEDR(7) <= right_click;
+	LEDR(8) <= '1' when game_over > 0 else '0';
+	
 	uart_i: entity work.UART
 	generic map (
 	  CLK_FREQ    => 50e6,
@@ -55,7 +59,7 @@ begin
 	)
 	port map (
 	  CLK         => CLOCK_50,
-	  RST         => KEY(0),  --Reset ativo em alta.
+	  RST         => '0',  --Reset ativo em alta.
 	  -- UART INTERFACE
 	  UART_TXD    => GPIO_0(1),  --CHANGE HERE!
 	  UART_RXD    => GPIO_0(0),  --CHANGE HERE!
@@ -74,12 +78,14 @@ begin
 		(CLOCK_50,
 		 not KEY(0),
 		 left_click,
+		 right_click,
 		 mouse_pos_addr,
 		 uart_valid,
 		 mem_rd_data,	uart_rd_data,
 		 mem_wr_data, 	uart_wr_data,
  		 mem_we, 		uart_we,
- 		 mem_addr
+ 		 mem_addr,
+		 game_over
 		 );
 
 	mouse: entity work.ps2_mouse
@@ -89,6 +95,7 @@ begin
 		PS2_CLK,
 		KEY,
 		left_click,
+		right_click,
 		y_coord,
 		x_coord,
 		mouse_newdata);
@@ -107,6 +114,7 @@ begin
 		x_coord,
 		mouse_newdata,
 		mouse_pos_addr);
+--		game_over);
 		
 	main_memory: entity work.memory
 	generic map

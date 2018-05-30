@@ -16,6 +16,7 @@ entity map_parser is
 	 mouse_x							: in integer;
 	 mouse_newdata					: in std_logic;
 	 mouse_pos_addr				: out integer);
+--	 end_game						: out integer range 0 to 2);
 end map_parser;
 
 architecture comportamento of map_parser is

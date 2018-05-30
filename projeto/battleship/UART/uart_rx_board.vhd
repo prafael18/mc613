@@ -14,7 +14,7 @@ use IEEE.NUMERIC_STD.ALL;
 -- UART FOR FPGA REQUIRES: 1 START BIT, 8 DATA BITS, 1 STOP BIT!!!
 -- OTHER PARAMETERS CAN BE SET USING GENERICS.
 
-entity UART_LOOPBACK_BOARD is
+entity uart_rx_board is
   Generic (
      CLK_FREQ   : integer := 50e6;   -- system clock frequency in Hz
 	  BAUD_RATE  : integer := 115200; -- baud rate value
@@ -28,15 +28,16 @@ entity UART_LOOPBACK_BOARD is
     HEX1, HEX0 : out std_logic_vector(6 downto 0);
 	 GPIO_0 :inout std_logic_vector(35 downto 0)
 	 );
-end UART_LOOPBACK_BOARD;
+end uart_rx_board;
 
-architecture FULL of UART_LOOPBACK_BOARD is
+architecture FULL of uart_rx_board is
 
 	component bin2hex is
 	port (SW: in std_logic_vector(3 downto 0);
 			HEX0: out std_logic_vector(6 downto 0));
 	end component;
 
+	signal disp_out: std_logic_vector (7 downto 0);
 	signal data_out: std_logic_vector (7 downto 0);
 	signal data_send: std_logic;
 	signal uart_txrx: std_logic;
@@ -73,21 +74,19 @@ begin
         DATA_SEND   => data_send,
         BUSY        => LEDR(2)
     );
-	 
-	 
-	process (valid, CLOCK_50)
-		variable tmp: std_logic;
-	begin
-	if (CLOCK_50'event and CLOCK_50 = '1') then
-		case (valid) is
-			when '0' => tmp := tmp;
-			when others => tmp := not tmp;
-		end case;
-	end if;
-		LEDR(0) <= tmp;
-	end process;
 
-	hex_disp1: bin2hex port map (data_out(7 downto 4), HEX1);
-	hex_disp2: bin2hex port map (data_out(3 downto 0), HEX0);
+	process(CLOCK_50)
+		variable tmp: std_logic_vector(7 downto 0) := "00000000";
+	begin
+		if CLOCK_50'event and CLOCK_50 = '1' then
+			if valid = '1' then
+				tmp := data_out(7 downto 0);
+			end if;
+		end if;
+		disp_out <= tmp;
+	end process;
+	
+	hex_disp1: bin2hex port map (disp_out(7 downto 4), HEX1);
+	hex_disp2: bin2hex port map (disp_out(3 downto 0), HEX0);
 		 
 end FULL;

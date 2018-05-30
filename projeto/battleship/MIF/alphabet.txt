@@ -64,6 +64,42 @@ XXXX
 X X
 X  X
 --r--
+X   X
+X   X
+X   X
+ X X
+  X
+--v--
+XXXXX
+X
+X
+X
+XXXXX
+--c--
+XXXXX
+X   X
+X   X
+X   X
+XXXXX
+--o--
+X   X
+X   X
+ XXX
+  X
+  X
+--y--
+XXX
+X  X
+X   X
+X  X
+XXX
+--d--
+XXXXX
+X
+XXX
+X
+X
+--f--
 
  XXX
  XXX

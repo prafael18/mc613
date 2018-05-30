@@ -78,7 +78,7 @@ def write_word(name, origins, alphabet):
         color = None
         if "*water" in name and char == "*":
             color = BLUE
-        elif "*hit" in name and char == "*":
+        elif "defeat" in name:
             color = RED
         else:
             color = GREEN
@@ -159,16 +159,23 @@ if __name__ == "__main__":
             populate_map(memory_map, player1_list, player1_origin)
             populate_map(memory_map, player2_list, player2_origin)
 
+            # Origin for battleship is (8,34) in VGA display.
+            title = "victory"
+            title_origins = []
+            map_word_origins(title, title_origins, (2, 34))
+            write_word(title, title_origins, alphabet)
+
+            title = "defeat"
+            title_origins = []
+            map_word_origins(title, title_origins, (7, 34))
+            write_word(title, title_origins, alphabet)
+            
             for l in range(max_line):
                 for c in range(max_col):
                     f.write("   {} : {};\n".format((l*128) + c, memory_map[l][c]))
             f.write("END;\n")
 
-        #Origin for battleship is (8,34) in VGA display.
-        # title = "battleship"
-        # title_origins = []
-        # map_word_origins(title, title_origins, (8, 34))
-        # write_word(title, title_origins, alphabet)
+
 
 
         #Origin for hit is (75, 10)
