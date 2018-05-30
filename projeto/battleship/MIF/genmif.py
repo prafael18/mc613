@@ -39,33 +39,38 @@ SHIP_BODY = bin(1).split('b')[1].zfill(word_size)
 WATER_BODY = bin(2).split('b')[1].zfill(word_size)
 
 filenames = ["../Memory/initial_map_p1.mif", "../Memory/initial_map_p2.mif"]
-
+# filenames = ["../VGA/vga_mem_2.mif"]
 
 def gen_alphabet(alphabet):
     with open("alphabet.txt") as f:
         out = f.readlines()
         line_buffer = []
         for l in out:
-            if "--" in l:
+            if "-" in l:
                 origins = []
-                char = l.split('--')[1]
-                for i in range(5):
-                    for j in range(5):
+                char = l.split('-')[0]
+                font_x = int(l.split('-')[1])
+                font_y = int(l.split('-')[2])
+                for i in range(font_y):
+                    for j in range(font_x):
                         if line_buffer[i][j] == 'X':
                             origins.append((i,j))
                         elif line_buffer[i][j] == '\n':
                             break
                         else:
                             continue
-                alphabet.update({char:origins})
+                alphabet.update({char:[origins, font_x, font_y]})
                 line_buffer = []
             else:
                 line_buffer.append(l)
 
 
 def map_word_origins(string_name, string_origins, origin):
+    total_gap = 0
     for i in range(string_name.__len__()):
-        string_origins.append((origin[0], origin[1] + 6*i))
+        if i > 0:
+            total_gap += alphabet[string_name[i-1]][1] + 1
+        string_origins.append((origin[0], origin[1] + total_gap))
 
 
 def write_char(memory_map, char_coord, origin, color):
@@ -82,7 +87,7 @@ def write_word(name, origins, alphabet):
             color = RED
         else:
             color = GREEN
-        write_char(memory_map, alphabet[char], origins[i], color=color)
+        write_char(memory_map, alphabet[char][0], origins[i], color=color)
         i += 1
 
 def populate_list(filename, player_list):
@@ -159,17 +164,30 @@ if __name__ == "__main__":
             populate_map(memory_map, player1_list, player1_origin)
             populate_map(memory_map, player2_list, player2_origin)
 
-            # Origin for battleship is (8,34) in VGA display.
-            title = "victory"
+            # # Origin for battleship is (8,34) in VGA display.
+            # title = "baTTLeshIP"
+            # title_origins = []
+            # map_word_origins(title, title_origins, (8, 34))
+            # write_word(title, title_origins, alphabet)
+
+            title = "VICTORY"
             title_origins = []
-            map_word_origins(title, title_origins, (2, 34))
+            map_word_origins(title, title_origins, (2, 46))
             write_word(title, title_origins, alphabet)
 
             title = "defeat"
             title_origins = []
-            map_word_origins(title, title_origins, (7, 34))
+            map_word_origins(title, title_origins, (7, 46))
             write_word(title, title_origins, alphabet)
-            
+
+            for l in range(max_line):
+                for c in range(max_col):
+                    if memory_map[l][c] == "00000000":
+                        print(" ", end="")
+                    else:
+                        print("X", end="")
+                print("")
+
             for l in range(max_line):
                 for c in range(max_col):
                     f.write("   {} : {};\n".format((l*128) + c, memory_map[l][c]))

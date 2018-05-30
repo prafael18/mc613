@@ -21,7 +21,7 @@ end player;
 
 architecture behavior of player is	
 	type state_type is (wait_turn, wait_read, read_hit, wait_click, val_click, upd_map, end_game);
-	signal y: state_type := wait_click;  --CHANGE HERE!
+	signal y: state_type := wait_turn;  --CHANGE HERE!
 
 	signal ally_ships_hit : integer := 0;
 	signal enemy_ships_hit: integer := 0;
@@ -36,7 +36,7 @@ begin
 		variable click_addr : integer := 0;
 	begin
 		if CLOCK_50'event and CLOCK_50 = '1' then
-			if reset = '1' then y <= wait_click;  --CHANGE HERE!
+			if reset = '1' then y <= wait_turn;  --CHANGE HERE!
 			else
 				case y is
 					when wait_turn =>

@@ -3,142 +3,196 @@ X   X
 XXXX
 X   X
 XXXX
---b--
+b-5-5
  XXX
 X   X
 XXXXX
 X   X
 X   X
---a--
+a-5-5
 XXXXX
   X
   X
   X
   X
---t--
+t-5-5
 X
 X
 X
 X
 XXXXX
---l--
+l-5-5
 XXXXX
 X
 XXXX
 X
 XXXXX
---e--
+e-5-5
 XXXXX
 X
 XXXXX
     X
 XXXXX
---s--
+s-5-5
 X   X
 X   X
 XXXXX
 X   X
 X   X
---h--
-XXXXX
-  X
-  X
-  X
-XXXXX
---i---
+h-5-5
+XXX
+ X
+ X
+ X
+XXX
+i-3-5
 XXXXX
 X   X
 XXXXX
 X
 X
---p--
+p-5-5
 X   X
 X   X
 X X X
 XX XX
 X   X
---w--
+w-5-5
 XXXX
 X   X
 XXXX
 X X
 X  X
---r--
+r-5-5
 X   X
 X   X
 X   X
  X X
   X
---v--
+v-5-5
 XXXXX
 X
 X
 X
 XXXXX
---c--
+c-5-5
 XXXXX
 X   X
 X   X
 X   X
 XXXXX
---o--
+o-5-5
 X   X
 X   X
  XXX
   X
   X
---y--
+y-5-5
 XXX
 X  X
 X   X
 X  X
 XXX
---d--
+d-5-5
 XXXXX
 X
 XXX
 X
 X
---f--
+f-5-5
+X   X
+X   X
+X   X
+ X X
+  X
+V-5-5
+ X
+ X
+ X
+ X
+ X
+I-3-5
+XXXX
+X
+X
+X
+XXXX
+C-4-5
+XXXXX
+  X
+  X
+  X
+  X
+T-5-5
+X
+X
+X
+X
+XXXX
+L-4-5
+XXXX
+X   X
+XXXX
+X
+X
+P-5-5
+XXXX
+X   X
+XXXX
+X  X
+X   X
+R-5-5
+X   X
+X   X
+ X X
+  X
+  X
+Y-5-5
+XXXX
+X  X
+X  X
+X  X
+XXXX
+O-4-5
 
  XXX
  XXX
  XXX
 
---*--
+*-5-5
 XXXXX
 XXXXX
 XXXXX
 XXXXX
 XXXXX
---X--
+X-5-5
   X
  XXX
 XXXXX
 XXXXX
 XXXXX
---^--
+^-5-5
 XXX
 XXXX
 XXXXX
 XXXX
 XXX
--->--
+>-5-5
   XXX
  XXXX
 XXXXX
  XXXX
   XXX
---<--
+<-5-5
 XXXXX
 XXXXX
 XXXXX
  XXX
   X
---_--
+_-5-5
   X
  XXX
 XXXXX
  XXX
   X
---@--
+@-5-5
