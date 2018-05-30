@@ -169,10 +169,7 @@ if __name__ == "__main__":
             title_origins = []
             map_word_origins(title, title_origins, (7, 34))
             write_word(title, title_origins, alphabet)
-
-            for l in range(max_line):
-                for c in range(max_col):
-                    if memory_map[l][c] == 
+            
             for l in range(max_line):
                 for c in range(max_col):
                     f.write("   {} : {};\n".format((l*128) + c, memory_map[l][c]))

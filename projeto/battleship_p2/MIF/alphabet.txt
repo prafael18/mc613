@@ -1,0 +1,144 @@
+XXXX
+X   X
+XXXX
+X   X
+XXXX
+--b--
+ XXX
+X   X
+XXXXX
+X   X
+X   X
+--a--
+XXXXX
+  X
+  X
+  X
+  X
+--t--
+X
+X
+X
+X
+XXXXX
+--l--
+XXXXX
+X
+XXXX
+X
+XXXXX
+--e--
+XXXXX
+X
+XXXXX
+    X
+XXXXX
+--s--
+X   X
+X   X
+XXXXX
+X   X
+X   X
+--h--
+XXXXX
+  X
+  X
+  X
+XXXXX
+--i---
+XXXXX
+X   X
+XXXXX
+X
+X
+--p--
+X   X
+X   X
+X X X
+XX XX
+X   X
+--w--
+XXXX
+X   X
+XXXX
+X X
+X  X
+--r--
+X   X
+X   X
+X   X
+ X X
+  X
+--v--
+XXXXX
+X
+X
+X
+XXXXX
+--c--
+XXXXX
+X   X
+X   X
+X   X
+XXXXX
+--o--
+X   X
+X   X
+ XXX
+  X
+  X
+--y--
+XXX
+X  X
+X   X
+X  X
+XXX
+--d--
+XXXXX
+X
+XXX
+X
+X
+--f--
+
+ XXX
+ XXX
+ XXX
+
+--*--
+XXXXX
+XXXXX
+XXXXX
+XXXXX
+XXXXX
+--X--
+  X
+ XXX
+XXXXX
+XXXXX
+XXXXX
+--^--
+XXX
+XXXX
+XXXXX
+XXXX
+XXX
+-->--
+  XXX
+ XXXX
+XXXXX
+ XXXX
+  XXX
+--<--
+XXXXX
+XXXXX
+XXXXX
+ XXX
+  X
+--_--
+  X
+ XXX
+XXXXX
+ XXX
+  X
+--@--

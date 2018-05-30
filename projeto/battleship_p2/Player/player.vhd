@@ -21,7 +21,7 @@ end player;
 
 architecture behavior of player is	
 	type state_type is (wait_turn, wait_read, read_hit, wait_click, val_click, upd_map, end_game);
-	signal y: state_type := wait_click;  --CHANGE HERE!
+	signal y: state_type := wait_turn;  --CHANGE HERE!
 	
 	signal clean_memory: std_logic;
 	
@@ -35,7 +35,7 @@ begin
 		variable click_addr : integer := 0;
 	begin
 		if CLOCK_50'event and CLOCK_50 = '1' then
-			if reset = '1' then y <= wait_click; --CHANGE HERE
+			if reset = '1' then y <= wait_turn; --CHANGE HERE
 			else
 				case y is
 					when wait_turn =>
@@ -82,7 +82,7 @@ begin
 						end if;
 					when end_game =>
 						if right_click = '1' then
-							y <= wait_click;	--CHANGE HERE TO RESTART AFTERWARDS! 
+							y <= wait_turn;	--CHANGE HERE TO RESTART AFTERWARDS! 
 						else
 							y <= end_game;
 						end if;

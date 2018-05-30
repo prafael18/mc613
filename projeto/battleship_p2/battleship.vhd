@@ -2,7 +2,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity battleship is 
+entity battleship_p2 is 
   port (    
     CLOCK_50                  : in  std_logic;
     KEY                       : in  std_logic_vector(0 downto 0);
@@ -14,9 +14,9 @@ entity battleship is
     VGA_CLK                   : out std_logic;
 	 GPIO_0							: inout std_logic_vector (35 downto 0);
     LEDR								: out std_logic_vector(9 downto 0));
-end battleship;
+end battleship_p2;
 
-architecture full of battleship is
+architecture full of battleship_p2 is
 	--VGA signals
 	signal vga_rd_addr : natural range 0 to 2**15 - 1;
 	signal vga_data_in : std_logic_vector(7 downto 0);
@@ -62,8 +62,8 @@ begin
 	  CLK         => CLOCK_50,
 	  RST         => '0',  --Reset ativo em alta.
 	  -- UART INTERFACE
-	  UART_TXD    => GPIO_0(1),  --CHANGE HERE!
-	  UART_RXD    => GPIO_0(0),  --CHANGE HERE!
+	  UART_TXD    => GPIO_0(0),  --CHANGE HERE!
+	  UART_RXD    => GPIO_0(1),  --CHANGE HERE!
 	  -- USER DATA OUTPUT INTERFACE
 	  DATA_OUT    => uart_rd_data,
 	  DATA_VLD    => uart_valid,
@@ -122,7 +122,7 @@ begin
 	generic map
 	  (DATA_WIDTH => 8,
 		ADDR_WIDTH => 15,
-		MIF_FILE => "Memory/initial_map_p1.mif") ---CHANGE HERE!
+		MIF_FILE => "Memory/initial_map_p2.mif") ---CHANGE HERE!
 	port map 
 	  (clk	 => CLOCK_50,
 		addr_a => vga_rd_addr,
