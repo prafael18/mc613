@@ -38,7 +38,10 @@ GREEN = bin(2).split('b')[1].zfill(word_size)
 SHIP_BODY = bin(1).split('b')[1].zfill(word_size)
 WATER_BODY = bin(2).split('b')[1].zfill(word_size)
 
-filenames = ["../Memory/initial_map_p1.mif", "../Memory/initial_map_p2.mif"]
+filenames = ["../Memory/initial_map_p1.mif", "../../battleship_p2/Memory/initial_map_p2.mif"]
+	     #"../../battleship_p2/Memory/initial_map_p1.mif",
+	     #"../../battleship_p2/Memory/initial_map_p2.mif"]
+
 # filenames = ["../VGA/vga_mem_2.mif"]
 
 def gen_alphabet(alphabet):
