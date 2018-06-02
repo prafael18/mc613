@@ -1,18 +1,18 @@
 -------------------------------------------------------------------------------
 -- Title      : VGA Controller for DE1 boards
--- Project    : 
+-- Project    :
 -------------------------------------------------------------------------------
 -- File       : vgacontop.vhd
 -- Author     : Rafael Auler
--- Company    : 
+-- Company    :
 -- Created    : 2010-03-21
 -- Last update: 2010-03-26
--- Platform   : 
+-- Platform   :
 -- Standard   : VHDL'2008
 -------------------------------------------------------------------------------
--- Description: 
+-- Description:
 -------------------------------------------------------------------------------
--- Copyright (c) 2010 
+-- Copyright (c) 2010
 -------------------------------------------------------------------------------
 -- Revisions  :
 -- Date        Version  Author          Description
@@ -80,7 +80,7 @@ entity vgacon is
     --  on-chip memory to instantiate this module with higher res).
     NUM_HORZ_PIXELS : natural := 128;  -- Number of horizontal pixels
     NUM_VERT_PIXELS : natural := 96);  -- Number of vertical pixels
-  
+
   port (
     clk50M, rstn              : in  std_logic;
     write_clk, write_enable   : in  std_logic;
@@ -96,7 +96,7 @@ end vgacon;
 architecture behav of vgacon is
   -- Two signals: one is delayed by one clock cycle. The monitor control uses
   -- the delayed one. We need a counter 1 clock cycle earlier, relative
-  -- to the monitor signal, in order to index the memory contents 
+  -- to the monitor signal, in order to index the memory contents
   -- for the next cycle, when the pixel is in fact sent to the monitor.
   signal h_count, h_count_d : integer range 0 to 799;  -- horizontal counter
   signal v_count, v_count_d : integer range 0 to 524;  -- vertical counter
@@ -180,8 +180,8 @@ begin  -- behav
         if v_count = 524 then
           v_count <= 0;
         else
-          v_count <= v_count + 1;  
-        end if;          
+          v_count <= v_count + 1;
+        end if;
       end if;
     end if;
   end process vert_counter;
@@ -228,7 +228,7 @@ begin  -- behav
   begin  -- process gen_r_addr
     read_addr <= h_count / (640 / NUM_HORZ_PIXELS)
                  + ((v_count/(480 / NUM_VERT_PIXELS))
-                    * NUM_HORZ_PIXELS);    
+                    * NUM_HORZ_PIXELS);
   end process gen_r_addr;
 
   -- Build color signals based on memory output and "drawarea" signal
@@ -256,18 +256,18 @@ use ieee.std_logic_1164.all;
 entity dual_clock_ram is
 
   generic (
-    MEMSIZE : natural);  
+    MEMSIZE : natural);
   port (
     read_clk, write_clk         : in  std_logic;  -- support different clocks
     data_in                     : in  std_logic_vector(2 downto 0);
-    write_address, read_address : in  integer range 0 to MEMSIZE - 1;  
+    write_address, read_address : in  integer range 0 to MEMSIZE - 1;
     we                          : in  std_logic;  -- write enable
     data_out                    : out std_logic_vector(2 downto 0));
 
 end dual_clock_ram;
 
 architecture behav of dual_clock_ram is
-  -- we only want to address (store) MEMSIZE elements 
+  -- we only want to address (store) MEMSIZE elements
   subtype addr is integer range 0 to MEMSIZE - 1;
   type mem is array (addr) of std_logic_vector(2 downto 0);
   signal ram_block : mem;
@@ -276,7 +276,7 @@ architecture behav of dual_clock_ram is
   attribute ramstyle : string;
   attribute ramstyle of dual_clock_ram : entity is "no_rw_check";
   attribute ram_init_file : string;
-  attribute ram_init_file of ram_block : signal is "VGA/vga_mem_2.mif";
+  attribute ram_init_file of ram_block : signal is "VGA/vga_mem.mif";
 
 begin  -- behav
 
@@ -287,7 +287,7 @@ begin  -- behav
   read: process (read_clk)
   begin  -- process read
     if read_clk'event and read_clk = '1' then  -- rising clock edge
-      data_out <= ram_block(read_address);      
+      data_out <= ram_block(read_address);
     end if;
   end process read;
 
@@ -300,7 +300,7 @@ begin  -- behav
     if write_clk'event and write_clk = '1' then  -- rising clock edge
       if we = '1' then
         ram_block(write_address) <= data_in;
-      end if;      
+      end if;
     end if;
   end process write;
 

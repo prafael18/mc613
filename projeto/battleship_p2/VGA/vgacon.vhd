@@ -276,7 +276,7 @@ architecture behav of dual_clock_ram is
   attribute ramstyle : string;
   attribute ramstyle of dual_clock_ram : entity is "no_rw_check";
   attribute ram_init_file : string;
-  attribute ram_init_file of ram_block : signal is "VGA/vga_mem_2.mif";
+  attribute ram_init_file of ram_block : signal is "VGA/vga_mem.mif";
 
 begin  -- behav
 
