@@ -307,6 +307,7 @@ architecture comportamento of map_parser is
 	charted_ship_flag := vga_data_in(2);
 	charted_water_flag := vga_data_in(3);
 	
+	mouse_pos_addr <= 100; --out of index
 	color <= "000";
 	if game_over = '1' then
 		if player1 = '1' and player2 = '1' then
